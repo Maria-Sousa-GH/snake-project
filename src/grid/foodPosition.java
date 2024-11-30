@@ -4,27 +4,27 @@ import com.codeforall.online.simplegraphics.graphics.Color;
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
 
 public class foodPosition {
-    private int col;
-    private int row;
-    private Grid grid;
+    private int cols;
+    private int rows;
+    private GameBoard gameBoard;
     private Rectangle rectangle;
 
-    public foodPosition(Grid grid) {
-        this.grid = grid;
+    public foodPosition(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
         createFood();
     }
 
     public void createFood() {
-        col = (int) (Math.random() * grid.getCols());
-        row = (int) (Math.random() * grid.getRows());
+        cols = (int) (Math.random() * gameBoard.getCols());
+        rows = (int) (Math.random() * gameBoard.getRows());
         if (rectangle != null) {
-            rectangle.setPosition(col * grid.getCellSize(), row * grid.getCellSize());
+            rectangle.setPosition(cols * gameBoard.getCellSize(), rows * gameBoard.getCellSize());
         }
     }
 
     public void setRectangle(Rectangle rectangle) {
         this.rectangle = rectangle;
-        rectangle.setPosition(col * grid.getCellSize(), row * grid.getCellSize());
+        rectangle.setPosition(cols * gameBoard.getCellSize(), rows * gameBoard.getCellSize());
         rectangle.setColor(Color.RED);
     }
 
@@ -32,11 +32,11 @@ public class foodPosition {
         return rectangle;
     }
 
-    public int getCol() {
-        return col;
+    public int getCols() {
+        return cols;
     }
 
-    public int getRow() {
-        return row;
+    public int getRows() {
+        return rows;
     }
 }
