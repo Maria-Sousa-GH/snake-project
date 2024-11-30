@@ -6,10 +6,10 @@ import java.util.LinkedList;
 public class snakePosition {
     private LinkedList<Position> segments;
     private Direction direction;
-    private Grid grid;
+    private GameBoard gamebBoard;
 
-    public snakePosition(Grid grid) {
-        this.grid = grid;
+    public snakePosition(GameBoard gamebBoard) {
+        this.grid = gamebBoard;
         segments = new LinkedList<>();
         direction = Direction.UP; // Initial direction of the snake
 
@@ -35,10 +35,10 @@ public class snakePosition {
         }
 
         // Wrap around if the snake goes off the grid
-        if (newCol < 0) newCol = grid.getCols() - 1;
-        if (newRow < 0) newRow = grid.getRows() - 1;
-        if (newCol >= grid.getCols()) newCol = 0;
-        if (newRow >= grid.getRows()) newRow = 0;
+        if (newCol < 0) newCol = gamebBoard.getCols() - 1;
+        if (newRow < 0) newRow = gamebBoard.getRows() - 1;
+        if (newCol >= gamebBoard.getCols()) newCol = 0;
+        if (newRow >= gamebBoard.getRows()) newRow = 0;
 
         Position newHead = new Position(grid);
         newHead.setCol(newCol);
