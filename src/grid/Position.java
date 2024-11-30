@@ -4,31 +4,31 @@ import com.codeforall.online.simplegraphics.graphics.Color;
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
 
 public class Position {
-    private int col;
-    private int row;
-    private Grid grid;
+    private int cols;
+    private int rows;
+    private GameBoard gameBoard;
     private Rectangle rectangle;
 
-    public Position(Grid grid) {
-        this.grid = grid;
-        col = (int) (Math.random() * grid.getCols());
-        row = (int) (Math.random() * grid.getRows());
+    public Position(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
+        cols = (int) (Math.random() * gameBoard.getCols());
+        rows = (int) (Math.random() * gameBoard.getRows());
     }
 
-    public int getCol() {
-        return col;
+    public int getCols() {
+        return cols;
     }
 
-    public void setCol(int col) {
-        this.col = col;
+    public void setCols(int cols) {
+        this.cols = cols;
     }
 
-    public int getRow() {
-        return row;
+    public int getRows() {
+        return rows;
     }
 
-    public void setRow(int row) {
-        this.row = row;
+    public void setRows(int rows) {
+        this.rows = rows;
     }
 
     public void setRectangle(Rectangle rectangle) {
