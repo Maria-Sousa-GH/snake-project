@@ -6,13 +6,13 @@ import com.codeforall.online.simplegraphics.graphics.Rectangle;
 public class Position {
     private int col;
     private int row;
-    private Grid grid;
+    private GameBoard gameboard;
     private Rectangle rectangle;
 
-    public Position(Grid grid) {
-        this.grid = grid;
-        col = (int) (Math.random() * grid.getCols());
-        row = (int) (Math.random() * grid.getRows());
+    public Position(GameBoard gameBoard) {
+        this.gameboard = gameBoard;
+        col = (int) (Math.random() * gameboard.getCols());
+        row = (int) (Math.random() * gameboard.getRows());
     }
 
     public int getCol() {
@@ -44,4 +44,5 @@ public class Position {
             rectangle.setColor(color);
         }
     }
+
 }
