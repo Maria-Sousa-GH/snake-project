@@ -6,10 +6,10 @@ import java.util.LinkedList;
 public class snakePosition {
     private LinkedList<Position> segments;
     private Direction direction;
-    private GameBoard gamebBoard;
+    private GameBoard gameBoard;
 
-    public snakePosition(GameBoard gamebBoard) {
-        this.grid = gamebBoard;
+    public snakePosition(GameBoard gameBoard) {
+        this.grid = gameBoard;
         segments = new LinkedList<>();
         direction = Direction.UP; // Initial direction of the snake
 
