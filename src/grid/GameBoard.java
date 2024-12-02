@@ -5,7 +5,7 @@ import com.codeforall.online.simplegraphics.pictures.Picture;
 
 public class GameBoard {
 
-    private Picture picture;
+    private final Picture picture;
     private static int pictureWidth;
     private static int pictureHeight;
     private int cellSize = 25;

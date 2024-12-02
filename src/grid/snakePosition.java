@@ -9,12 +9,12 @@ public class snakePosition {
     private GameBoard gameBoard;
 
     public snakePosition(GameBoard gameBoard) {
-        this.grid = gameBoard;
+        this.GameBoard = gameBoard;
         segments = new LinkedList<>();
         direction = Direction.UP; // Initial direction of the snake
 
         // Initial snake segment
-        Position head = new Position(grid);
+        Position head = new Position(gameBoard);
         segments.add(head);
     }
 
@@ -35,12 +35,12 @@ public class snakePosition {
         }
 
         // Wrap around if the snake goes off the grid
-        if (newCol < 0) newCol = gamebBoard.getCols() - 1;
-        if (newRow < 0) newRow = gamebBoard.getRows() - 1;
-        if (newCol >= gamebBoard.getCols()) newCol = 0;
-        if (newRow >= gamebBoard.getRows()) newRow = 0;
+        if (newCol < 0) newCol = gameBoard.getCols() - 1;
+        if (newRow < 0) newRow = gameBoard.getRows() - 1;
+        if (newCol >= gameBoard.getCols()) newCol = 0;
+        if (newRow >= gameBoard.getRows()) newRow = 0;
 
-        Position newHead = new Position(grid);
+        Position newHead = new Position(gameBoard);
         newHead.setCol(newCol);
         newHead.setRow(newRow);
 
@@ -50,7 +50,7 @@ public class snakePosition {
 
     public void grow() {
         Position tail = segments.getLast();
-        Position newSegment = new Position(grid);
+        Position newSegment = new Position(gameBoard);
         newSegment.setCol(tail.getCol());
         newSegment.setRow(tail.getRow());
         segments.addLast(newSegment); // Add a new segment to the tail
