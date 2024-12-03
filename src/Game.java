@@ -86,23 +86,23 @@ public class Game implements KeyboardHandler {
     public void keyPressed(KeyboardEvent keyboardEvent) {
         if (!disableKey) {
 
-            if ((keyboardEvent.getKey() == KeyboardEvent.KEY_RIGHT) && (!snakelist.getFirst().getDirection().isOpposite(Direction.RIGHT))) {
-                snakelist.getFirst().setDirection(Direction.RIGHT);
+            if ((keyboardEvent.getKey() == KeyboardEvent.KEY_RIGHT) && (!snakelist.get(0).getDirection().isOpposite(Direction.RIGHT))) {
+                snakelist.get(0).setDirection(Direction.RIGHT);
                 disableKey = true;
 
-            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_LEFT) && (!snakelist.getFirst().getDirection().isOpposite(Direction.LEFT))) {
+            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_LEFT) && (!snakelist.get(0).getDirection().isOpposite(Direction.LEFT))) {
 
-                snakelist.getFirst().setDirection(Direction.LEFT);
+                snakelist.get(0).setDirection(Direction.LEFT);
                 disableKey = true;
 
-            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_UP) && (!snakelist.getFirst().getDirection().isOpposite(Direction.UP))) {
+            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_UP) && (!snakelist.get(0).getDirection().isOpposite(Direction.UP))) {
 
-                snakelist.getFirst().setDirection(Direction.UP);
+                snakelist.get(0).setDirection(Direction.UP);
                 disableKey = true;
 
-            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_DOWN) && (!snakelist.getFirst().getDirection().isOpposite(Direction.DOWN))) {
+            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_DOWN) && (!snakelist.get(0).getDirection().isOpposite(Direction.DOWN))) {
 
-                snakelist.getFirst().setDirection(Direction.DOWN);
+                snakelist.get(0).setDirection(Direction.DOWN);
                 disableKey = true;
             }
         }
@@ -142,7 +142,7 @@ public class Game implements KeyboardHandler {
 
         for (SnakeParts r : snakelist) {
 
-            if (r.equals(snakelist.getFirst())) {
+            if (r.equals(snakelist.get(0))) {
 
                 firstDir = r.getDirection();
                 currDir = firstDir;
@@ -163,7 +163,7 @@ public class Game implements KeyboardHandler {
         Position pos = new Position(grid);
         SnakeParts snake = new SnakeParts(pos);
 
-        SnakeParts first = snakelist.getFirst();
+        SnakeParts first = snakelist.get(0);
 
         switch (first.getDirection()) {
 
@@ -203,10 +203,10 @@ public class Game implements KeyboardHandler {
     public void foodColision() {
 //   a = food position    /  B=  snake head
 
-        if ((grid.columnToX(snakelist.getFirst().getPos().getCol()) >= grid.columnToX(foodPosition.getCols())) &&                                                            // from left
-                (grid.columnToX(snakelist.getFirst().getPos().getCol()) + grid.getCellSize()) <= (grid.columnToX(foodPosition.getCols()) + grid.getCellSize()) &&              //from right
-                grid.rowToY(snakelist.getFirst().getPos().getRow()) >= grid.rowToY(foodPosition.getRows()) &&                                                          // from top
-                ((grid.rowToY(snakelist.getFirst().getPos().getRow()) + grid.getCellSize()) <= (grid.rowToY(foodPosition.getRows()) + grid.getCellSize()))) {             //   from buttom
+        if ((grid.columnToX(snakelist.get(0).getPos().getCol()) >= grid.columnToX(foodPosition.getCols())) &&                                                            // from left
+                (grid.columnToX(snakelist.get(0).getPos().getCol()) + grid.getCellSize()) <= (grid.columnToX(foodPosition.getCols()) + grid.getCellSize()) &&              //from right
+                grid.rowToY(snakelist.get(0).getPos().getRow()) >= grid.rowToY(foodPosition.getRows()) &&                                                          // from top
+                ((grid.rowToY(snakelist.get(0).getPos().getRow()) + grid.getCellSize()) <= (grid.rowToY(foodPosition.getRows()) + grid.getCellSize()))) {             //   from buttom
 
             eat();
             foodPosition.createFood();
@@ -216,13 +216,13 @@ public class Game implements KeyboardHandler {
     public void colisionDetector() {
 
         for (SnakeParts c : snakelist) {
-            if (!c.equals(snakelist.getFirst())){
+            if (!c.equals(snakelist.get(0))){
 
 
-                if ((grid.columnToX(snakelist.getFirst().getPos().getCol()) >= grid.columnToX(c.getPos().getCol())) &&                                                              // from left
-                        (grid.columnToX(snakelist.getFirst().getPos().getCol()) + grid.getCellSize()) <= (grid.columnToX(c.getPos().getCol()) + grid.getCellSize()) &&              //from right
-                        grid.rowToY(snakelist.getFirst().getPos().getRow()) >= grid.rowToY(c.getPos().getRow()) &&                                                                  // from top
-                        ((grid.rowToY(snakelist.getFirst().getPos().getRow()) + grid.getCellSize()) <= (grid.rowToY(c.getPos().getRow()) + grid.getCellSize()))) {                  //from bottom
+                if ((grid.columnToX(snakelist.get(0).getPos().getCol()) >= grid.columnToX(c.getPos().getCol())) &&                                                              // from left
+                        (grid.columnToX(snakelist.get(0).getPos().getCol()) + grid.getCellSize()) <= (grid.columnToX(c.getPos().getCol()) + grid.getCellSize()) &&              //from right
+                        grid.rowToY(snakelist.get(0).getPos().getRow()) >= grid.rowToY(c.getPos().getRow()) &&                                                                  // from top
+                        ((grid.rowToY(snakelist.get(0).getPos().getRow()) + grid.getCellSize()) <= (grid.rowToY(c.getPos().getRow()) + grid.getCellSize()))) {                  //from bottom
 
                     for (SnakeParts n: snakelist){
                         n.setCrashed();
@@ -233,10 +233,10 @@ public class Game implements KeyboardHandler {
             }
         }
 
-        if (grid.columnToX(snakelist.getFirst().getPos().getCol())  <= 10 ||                                                          // collide with left limit wall
-                (grid.columnToX(snakelist.getFirst().getPos().getCol())+15) >= grid.columnToX(grid.getCols()) ||                     // collide with right limit wall
-                grid.rowToY(snakelist.getFirst().getPos().getRow()) <= 10 ||                                                         // collide with top limit wall
-                ((grid.rowToY(snakelist.getFirst().getPos().getRow()) + grid.getCellSize()) >= grid.rowToY(grid.getRows()))) {       // collide with bottom limit wall
+        if (grid.columnToX(snakelist.get(0).getPos().getCol())  <= 10 ||                                                          // collide with left limit wall
+                (grid.columnToX(snakelist.get(0).getPos().getCol())+15) >= grid.columnToX(grid.getCols()) ||                     // collide with right limit wall
+                grid.rowToY(snakelist.get(0).getPos().getRow()) <= 10 ||                                                         // collide with top limit wall
+                ((grid.rowToY(snakelist.get(0).getPos().getRow()) + grid.getCellSize()) >= grid.rowToY(grid.getRows()))) {       // collide with bottom limit wall
 
 
 
