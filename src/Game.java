@@ -218,7 +218,6 @@ public class Game implements KeyboardHandler {
         for (SnakeParts c : snakelist) {
             if (!c.equals(snakelist.get(0))){
 
-
                 if ((grid.columnToX(snakelist.get(0).getPos().getCol()) >= grid.columnToX(c.getPos().getCol())) &&                                                              // from left
                         (grid.columnToX(snakelist.get(0).getPos().getCol()) + grid.getCellSize()) <= (grid.columnToX(c.getPos().getCol()) + grid.getCellSize()) &&              //from right
                         grid.rowToY(snakelist.get(0).getPos().getRow()) >= grid.rowToY(c.getPos().getRow()) &&                                                                  // from top
@@ -233,10 +232,10 @@ public class Game implements KeyboardHandler {
             }
         }
 
-        if (grid.columnToX(snakelist.get(0).getPos().getCol())  <= 10 ||                                                          // collide with left limit wall
-                (grid.columnToX(snakelist.get(0).getPos().getCol())+15) >= grid.columnToX(grid.getCols()) ||                     // collide with right limit wall
-                grid.rowToY(snakelist.get(0).getPos().getRow()) <= 10 ||                                                         // collide with top limit wall
-                ((grid.rowToY(snakelist.get(0).getPos().getRow()) + grid.getCellSize()) >= grid.rowToY(grid.getRows()))) {       // collide with bottom limit wall
+        if ((grid.columnToX(snakelist.get(0).getPos().getCol()) <= 10  && snakelist.get(0).getDirection() == Direction.LEFT )||                                                          // collide with left limit wall
+                ((grid.columnToX(snakelist.get(0).getPos().getCol())+15) >= grid.columnToX(grid.getCols()) && snakelist.get(0).getDirection() == Direction.RIGHT)||                     // collide with right limit wall
+                (grid.rowToY(snakelist.get(0).getPos().getRow()) <= 10 && snakelist.get(0).getDirection() == Direction.UP)||                                                         // collide with top limit wall
+                (((grid.rowToY(snakelist.get(0).getPos().getRow()) + grid.getCellSize()) >= grid.rowToY(grid.getRows()))&& snakelist.get(0).getDirection() == Direction.DOWN)) {       // collide with bottom limit wall
 
 
 
