@@ -1,13 +1,9 @@
-import com.codeforall.online.simplegraphics.graphics.Rectangle;
-import grid.GameBoard;
-import grid.snakePosition;
-
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
-        //Rectangle rectangle = new Rectangle(10,10,400,400);
-        //rectangle.draw();
-        snakePosition position = new snakePosition();
+        Game game = new Game(20, 20, 200);
 
+        game.init();
+        game.start();
     }
 }
