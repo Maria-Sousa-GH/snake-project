@@ -41,29 +41,6 @@ public class     Position {
         }
     }
 
-    public void move(Direction direction) {
+    public Grid getGrid(){return grid;}
 
-        switch (direction) {
-
-            case UP:
-                rectangle.translate(0, grid.getCellSize() * -1);
-                row--;
-                break;
-            case DOWN:
-                rectangle.translate(0, grid.getCellSize());
-                row++;
-                break;
-            case LEFT:
-                rectangle.translate(grid.getCellSize() * -1, 0);
-                col--;
-                break;
-            case RIGHT:
-                rectangle.translate(grid.getCellSize(), 0);
-                col++;
-                break;
-            default:
-                rectangle.translate(0, 0);
-                break;
-        }
-    }
 }

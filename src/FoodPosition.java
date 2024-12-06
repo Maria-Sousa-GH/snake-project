@@ -2,43 +2,31 @@ import com.codeforall.online.simplegraphics.graphics.Color;
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
 
 public class FoodPosition {
-    private int cols;
-    private int rows;
-    private Grid grid;
-    private Rectangle rectangle;
+
+    private Position position;
 
     public FoodPosition(Grid grid) {
-        this.grid = grid;
+        this.position = new Position(grid);
         createFood();
     }
 
     public void createFood() {
-        if (rectangle != null){
-            rectangle.delete();
+        if (position.getRectangle() != null){
+            position.getRectangle().delete();
         }
-        cols = (int) (Math.random() * grid.getCols());
-        rows = (int) (Math.random() * grid.getRows());
+        position.setCol((int) (Math.random() * position.getGrid().getCols()));
+        position.setRow((int) (Math.random() * position.getGrid().getRows()));
 
-        rectangle = new Rectangle(grid.columnToX(cols), grid.rowToY(rows), grid.getCellSize(), grid.getCellSize());
+        Rectangle rectangle = new Rectangle(position.getGrid().columnToX(position.getCol()), position.getGrid().rowToY(position.getRow()), position.getGrid().getCellSize(), position.getGrid().getCellSize());
         rectangle.fill();
-
-    }
-
-    public void setRectangle(Rectangle rectangle) {
-        this.rectangle = rectangle;
-        //  rectangle.setPosition(cols * grid.getCellSize(), rows * grid.getCellSize());
-        rectangle.setColor(Color.RED);
-    }
-
-    public Rectangle getRectangle() {
-        return rectangle;
+        position.setRectangle(rectangle);
     }
 
     public int getCols() {
-        return cols;
+        return position.getCol();
     }
 
     public int getRows() {
-        return rows;
+        return position.getRow();
     }
 }

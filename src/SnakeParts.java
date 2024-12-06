@@ -37,7 +37,28 @@ public class SnakeParts {
     public void move() {
 
         if (!crashed) {
-            getPos().move(direction);
+            switch (direction) {
+
+                case UP:
+                    pos.getRectangle().translate(0, pos.getGrid().getCellSize() * -1);
+                    pos.setRow(pos.getRow()-1);
+                    break;
+                case DOWN:
+                    pos.getRectangle().translate(0, pos.getGrid().getCellSize());
+                    pos.setRow(pos.getRow()+1);
+                    break;
+                case LEFT:
+                    pos.getRectangle().translate(pos.getGrid().getCellSize() * -1, 0);
+                    pos.setCol(pos.getCol()-1);
+                    break;
+                case RIGHT:
+                    pos.getRectangle().translate(pos.getGrid().getCellSize(), 0);
+                    pos.setCol(pos.getCol()+1);
+                    break;
+                default:
+                    pos.getRectangle().translate(0, 0);
+                    break;
+            }
         }
 
     }
