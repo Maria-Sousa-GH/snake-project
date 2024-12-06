@@ -9,7 +9,6 @@ public class     Position {
 
     public Position(Grid grid) {
         this.grid = grid;
-
     }
 
     public int getCol() {
@@ -47,31 +46,23 @@ public class     Position {
         switch (direction) {
 
             case UP:
-
                 rectangle.translate(0, grid.getCellSize() * -1);
                 row--;
-
                 break;
             case DOWN:
-
                 rectangle.translate(0, grid.getCellSize());
                 row++;
-
                 break;
             case LEFT:
-
                 rectangle.translate(grid.getCellSize() * -1, 0);
                 col--;
-
                 break;
             case RIGHT:
-
                 rectangle.translate(grid.getCellSize(), 0);
                 col++;
-
                 break;
             default:
-
+                rectangle.translate(0, 0);
                 break;
         }
     }

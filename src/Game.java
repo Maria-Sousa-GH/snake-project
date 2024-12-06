@@ -1,22 +1,21 @@
 import com.codeforall.online.simplegraphics.graphics.Color;
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
-import com.codeforall.online.simplegraphics.keyboard.Keyboard;
-import com.codeforall.online.simplegraphics.keyboard.KeyboardEvent;
-import com.codeforall.online.simplegraphics.keyboard.KeyboardEventType;
-import com.codeforall.online.simplegraphics.keyboard.KeyboardHandler;
 
 import java.util.ArrayList;
 
-public class Game implements KeyboardHandler {
+public class Game {
 
     private Grid grid;
     private int delay;
     private ArrayList<SnakeParts> snakelist;
-    private Keyboard keyboard;
+    private MyKeyboard keyboard;
     private FoodPosition foodPosition;
     private Direction firstDir;
     private Direction currDir;
-    private boolean disableKey;
+    private int score;
+    private int[] highScores;
+    private FileManagement file;
+    private boolean borderless;
 
 
     public Game(int cols, int rows, int delay) {
@@ -24,20 +23,22 @@ public class Game implements KeyboardHandler {
         grid = new Grid(cols, rows);
         this.delay = delay;
         this.snakelist = new ArrayList<>();
+        keyboard = new MyKeyboard(snakelist);
+        highScores = new int[10];
+        file = new FileManagement();
+
+        this.borderless = false;
     }
 
     public void snakeInit() {
 
         Position snakeHeadPos = new Position(grid);
-        int a = grid.getCols()/2;
-        int b = grid.getRows()/2;
         snakeHeadPos.setRow(grid.getRows()/2);
         snakeHeadPos.setCol(grid.getCols()/2);
 
-
         Rectangle headRectangle = new Rectangle(grid.columnToX(snakeHeadPos.getCol()), grid.rowToY(snakeHeadPos.getRow()), grid.getCellSize(), grid.getCellSize());
-
         headRectangle.fill();
+
         snakeHeadPos.setRectangle(headRectangle);
         SnakeParts headSnake = new SnakeParts(snakeHeadPos);
         headSnake.setDirection(Direction.values()[(int) (Math.random() * Direction.values().length)]);
@@ -52,65 +53,9 @@ public class Game implements KeyboardHandler {
     public void init() {
 
         grid.init();
-        keyInit();
         snakeInit();
         foodInit();
-    }
-
-    public void keyInit() {
-
-        keyboard = new Keyboard(this);
-
-        KeyboardEvent goRight = new KeyboardEvent();
-        goRight.setKey(KeyboardEvent.KEY_RIGHT);
-        goRight.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(goRight);
-
-        KeyboardEvent goLeft = new KeyboardEvent();
-        goLeft.setKey(KeyboardEvent.KEY_LEFT);
-        goLeft.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(goLeft);
-
-        KeyboardEvent goUp = new KeyboardEvent();
-        goUp.setKey(KeyboardEvent.KEY_UP);
-        goUp.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(goUp);
-
-        KeyboardEvent goDown = new KeyboardEvent();
-        goDown.setKey(KeyboardEvent.KEY_DOWN);
-        goDown.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        keyboard.addEventListener(goDown);
-    }
-
-    @Override
-    public void keyPressed(KeyboardEvent keyboardEvent) {
-        if (!disableKey) {
-
-            if ((keyboardEvent.getKey() == KeyboardEvent.KEY_RIGHT) && (!snakelist.get(0).getDirection().isOpposite(Direction.RIGHT))) {
-                snakelist.get(0).setDirection(Direction.RIGHT);
-                disableKey = true;
-
-            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_LEFT) && (!snakelist.get(0).getDirection().isOpposite(Direction.LEFT))) {
-
-                snakelist.get(0).setDirection(Direction.LEFT);
-                disableKey = true;
-
-            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_UP) && (!snakelist.get(0).getDirection().isOpposite(Direction.UP))) {
-
-                snakelist.get(0).setDirection(Direction.UP);
-                disableKey = true;
-
-            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_DOWN) && (!snakelist.get(0).getDirection().isOpposite(Direction.DOWN))) {
-
-                snakelist.get(0).setDirection(Direction.DOWN);
-                disableKey = true;
-            }
-        }
-
-    }
-
-    @Override
-    public void keyReleased(KeyboardEvent keyboardEvent) {
+        highScores = file.getScores();
 
     }
 
@@ -120,12 +65,10 @@ public class Game implements KeyboardHandler {
             // Pause for a while
             Thread.sleep(delay);
 
-            colisionDetector();
-            foodColision();
-
+            collisionDetector();
+            foodCollision();
             moveSnake();
-            disableKey = false;
-
+            keyboard.setDisableKey(false);
         }
     }
 
@@ -138,15 +81,12 @@ public class Game implements KeyboardHandler {
     }
 
     public void passDirection() {
-
-
         for (SnakeParts r : snakelist) {
 
             if (r.equals(snakelist.get(0))) {
 
                 firstDir = r.getDirection();
                 currDir = firstDir;
-
             } else {
 
                 currDir = r.getDirection();
@@ -154,8 +94,6 @@ public class Game implements KeyboardHandler {
                 firstDir = currDir;
             }
         }
-
-
     }
 
     public void eat() {
@@ -200,7 +138,7 @@ public class Game implements KeyboardHandler {
 
     }
 
-    public void foodColision() {
+    public void foodCollision() {
 //   a = food position    /  B=  snake head
 
         if ((grid.columnToX(snakelist.get(0).getPos().getCol()) >= grid.columnToX(foodPosition.getCols())) &&                                                            // from left
@@ -209,43 +147,91 @@ public class Game implements KeyboardHandler {
                 ((grid.rowToY(snakelist.get(0).getPos().getRow()) + grid.getCellSize()) <= (grid.rowToY(foodPosition.getRows()) + grid.getCellSize()))) {             //   from buttom
 
             eat();
+            this.score+=10;
+            System.out.println("Game score: "+score);
             foodPosition.createFood();
         }
     }
 
-    public void colisionDetector() {
-
+    public void collisionDetector() {
+        //collision with snake body
         for (SnakeParts c : snakelist) {
             if (!c.equals(snakelist.get(0))){
 
                 if ((grid.columnToX(snakelist.get(0).getPos().getCol()) >= grid.columnToX(c.getPos().getCol())) &&                                                              // from left
                         (grid.columnToX(snakelist.get(0).getPos().getCol()) + grid.getCellSize()) <= (grid.columnToX(c.getPos().getCol()) + grid.getCellSize()) &&              //from right
                         grid.rowToY(snakelist.get(0).getPos().getRow()) >= grid.rowToY(c.getPos().getRow()) &&                                                                  // from top
-                        ((grid.rowToY(snakelist.get(0).getPos().getRow()) + grid.getCellSize()) <= (grid.rowToY(c.getPos().getRow()) + grid.getCellSize()))) {                  //from bottom
+                        ((grid.rowToY(snakelist.get(0).getPos().getRow()) + grid.getCellSize()) <= (grid.rowToY(c.getPos().getRow()) + grid.getCellSize()))) {//from bottom
 
+                    if (!snakelist.get(0).isCrashed()) {
+                        gameOver();
+                    }
                     for (SnakeParts n: snakelist){
                         n.setCrashed();
                         n.getPos().setRecColor(Color.RED);
                     }
-
                 }
             }
         }
+        // collision with borders if not borderless
+        if (!borderless){
+            if ((grid.columnToX(snakelist.get(0).getPos().getCol()) <= 10  && snakelist.get(0).getDirection() == Direction.LEFT )||                                                          // collide with left limit wall
+                    ((grid.columnToX(snakelist.get(0).getPos().getCol())+15) >= grid.columnToX(grid.getCols()) && snakelist.get(0).getDirection() == Direction.RIGHT)||                     // collide with right limit wall
+                    (grid.rowToY(snakelist.get(0).getPos().getRow()) <= 10 && snakelist.get(0).getDirection() == Direction.UP)||                                                         // collide with top limit wall
+                    (((grid.rowToY(snakelist.get(0).getPos().getRow()) + grid.getCellSize()) >= grid.rowToY(grid.getRows()))&& snakelist.get(0).getDirection() == Direction.DOWN)) {       // collide with bottom limit wall
 
-        if ((grid.columnToX(snakelist.get(0).getPos().getCol()) <= 10  && snakelist.get(0).getDirection() == Direction.LEFT )||                                                          // collide with left limit wall
-                ((grid.columnToX(snakelist.get(0).getPos().getCol())+15) >= grid.columnToX(grid.getCols()) && snakelist.get(0).getDirection() == Direction.RIGHT)||                     // collide with right limit wall
-                (grid.rowToY(snakelist.get(0).getPos().getRow()) <= 10 && snakelist.get(0).getDirection() == Direction.UP)||                                                         // collide with top limit wall
-                (((grid.rowToY(snakelist.get(0).getPos().getRow()) + grid.getCellSize()) >= grid.rowToY(grid.getRows()))&& snakelist.get(0).getDirection() == Direction.DOWN)) {       // collide with bottom limit wall
+                if (!snakelist.get(0).isCrashed()) {
+                    gameOver();
+                }
+                for (SnakeParts n: snakelist){
+                    n.setCrashed();
+                    n.getPos().setRecColor(Color.RED);
+                }
+            }
+        }else{
+            // pass by left limit wall
+            if (grid.columnToX(snakelist.get(0).getPos().getCol()) <= 10  && snakelist.get(0).getDirection() == Direction.LEFT ){
 
-
-
-            for (SnakeParts n: snakelist){
-                n.setCrashed();
-                n.getPos().setRecColor(Color.RED);
             }
 
         }
 
+
     }
+
+    public void gameOver(){
+// insert new score if belongs to the high scores. sort it and write to file
+        boolean scorePresent = false;
+
+        for (int ii= 0; ii< highScores.length;ii++){
+            if (score == highScores[ii]){
+                scorePresent = true;
+            }
+        }
+        if (!scorePresent){
+            for (int i=0; i<highScores.length;i++){
+                int savedScore;
+                int secSavedScore;
+                if (score > highScores[i]){
+                    savedScore = highScores[i];
+                    highScores[i] = score;
+                    for (int j= i+1;j<highScores.length; j++){
+                        secSavedScore = highScores[j];
+                        highScores[j]=savedScore;
+                        savedScore = secSavedScore;
+                        secSavedScore =0;
+                    }
+                    break;
+                }
+            }
+        }
+        System.out.println("Final Game Score: "+score+"\nHighscores: ");
+        for (int k=0; k<highScores.length;k++){
+            System.out.println(highScores[k]);
+        }
+
+        file.saveScores(highScores);
+    }
+
 
 }

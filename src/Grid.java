@@ -3,7 +3,6 @@ import com.codeforall.online.simplegraphics.graphics.Rectangle;
 public class Grid {
 
     public static final int PADDING = 10;
-
     private int cellSize = 15;
     private int cols;
     private int rows;
@@ -18,7 +17,6 @@ public class Grid {
     public Grid(int cols, int rows) {
         this.cols = cols;
         this.rows = rows;
-
     }
     /**
      * Initializes the field simple graphics rectangle and draws it
