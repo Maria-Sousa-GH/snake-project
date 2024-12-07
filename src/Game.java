@@ -58,10 +58,10 @@ public class Game {
         foodInit();
         highScores = file.getScores();
 
-        Text title = new Text(Grid.PADDING + 100,grid.rowToY(grid.getRows())+5," S N A K E_4 A L L ");
+        Text title = new Text(Grid.PADDING + 300,grid.rowToY(grid.getRows())+5," S N A K E_4 A L L ");
         title.grow(15,15);
         title.translate(title.getX()+(Grid.PADDING-title.getX()),10);
-        title.setColor(Color.DARK_GRAY);
+        title.setColor(Color.WHITE);
         title.draw();
 
 

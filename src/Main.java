@@ -5,7 +5,7 @@ import java.util.TreeSet;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-        Game game = new Game(20, 20, 200);
+        Game game = new Game(45, 35, 200);
 
         Background background = new Background();
 
