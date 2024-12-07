@@ -1,11 +1,14 @@
 import com.codeforall.online.simplegraphics.graphics.Color;
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
+import com.codeforall.online.simplegraphics.pictures.Picture;
 
 public class     Position {
     private int col;
     private int row;
     private Grid grid;
     private Rectangle rectangle;
+    private Picture picture;
+
 
     public Position(Grid grid) {
         this.grid = grid;
@@ -33,6 +36,13 @@ public class     Position {
 
     public Rectangle getRectangle() {
         return rectangle;
+    }
+
+    public void setPicture(Picture picture) {
+        this.picture = picture;
+    }
+    public Picture getPicture() {
+        return picture;
     }
 
     public void setRecColor(Color color) {

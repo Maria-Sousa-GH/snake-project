@@ -2,7 +2,7 @@ import com.codeforall.online.simplegraphics.graphics.Rectangle;
 
 public class Grid {
 
-    public static final int PADDING = 10;
+    public static final int PADDING = 20;
     private int cellSize = 15;
     private int cols;
     private int rows;

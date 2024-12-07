@@ -1,5 +1,6 @@
 import com.codeforall.online.simplegraphics.graphics.Color;
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
+import com.codeforall.online.simplegraphics.graphics.Text;
 
 import java.util.ArrayList;
 
@@ -56,6 +57,14 @@ public class Game {
         snakeInit();
         foodInit();
         highScores = file.getScores();
+
+        Text title = new Text(Grid.PADDING + 100,grid.rowToY(grid.getRows())+5," S N A K E_4 A L L ");
+        title.grow(15,15);
+        title.translate(title.getX()+(Grid.PADDING-title.getX()),10);
+        title.setColor(Color.DARK_GRAY);
+        title.draw();
+
+
 
     }
 

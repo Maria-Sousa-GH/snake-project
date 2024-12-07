@@ -1,9 +1,9 @@
-import com.codeforall.online.simplegraphics.graphics.Color;
-import com.codeforall.online.simplegraphics.graphics.Rectangle;
+import com.codeforall.online.simplegraphics.pictures.Picture;
 
 public class FoodPosition {
 
     private Position position;
+    private Picture picture;
 
     public FoodPosition(Grid grid) {
         this.position = new Position(grid);
@@ -11,15 +11,18 @@ public class FoodPosition {
     }
 
     public void createFood() {
-        if (position.getRectangle() != null){
-            position.getRectangle().delete();
+        if (position.getPicture() != null){
+            position.getPicture().delete();
+
         }
+
         position.setCol((int) (Math.random() * position.getGrid().getCols()));
         position.setRow((int) (Math.random() * position.getGrid().getRows()));
 
-        Rectangle rectangle = new Rectangle(position.getGrid().columnToX(position.getCol()), position.getGrid().rowToY(position.getRow()), position.getGrid().getCellSize(), position.getGrid().getCellSize());
-        rectangle.fill();
-        position.setRectangle(rectangle);
+        picture = new Picture(position.getGrid().columnToX(position.getCol()),position.getGrid().rowToY(position.getRow()),"resources/apple.png");
+        picture.draw();
+        position.setPicture(picture);
+
     }
 
     public int getCols() {
