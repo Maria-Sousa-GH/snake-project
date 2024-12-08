@@ -7,7 +7,7 @@ public class Background {
     private static int backgroundHeight;
 
     public Background() {
-        background = new Picture(0,0,"resources/background.jpeg");
+        background = new Picture(0,0,"resources/snakeback2.jpg");
         background.draw();
         backgroundWidth = background.getMaxX();
         backgroundHeight = background.getMaxY();

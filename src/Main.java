@@ -1,13 +1,18 @@
-import java.util.Comparator;
-import java.util.PriorityQueue;
-import java.util.TreeSet;
+
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-        Game game = new Game(45, 35, 200);
+
+        Sound sound = new Sound("sound.wav");
+        sound.play();
+
+
+
+        Game game = new Game(49,30, 200);
 
         Background background = new Background();
+
 
         game.init();
         game.start();

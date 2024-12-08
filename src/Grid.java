@@ -1,9 +1,10 @@
+import com.codeforall.online.simplegraphics.graphics.Canvas;
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
 
 public class Grid {
 
-    public static final int PADDING = 20;
-    private int cellSize = 15;
+    public static final int PADDING = 15;
+    private int cellSize = 20;
     private int cols;
     private int rows;
 
@@ -22,8 +23,14 @@ public class Grid {
      * Initializes the field simple graphics rectangle and draws it
      */
     public void init() {
-        Rectangle field = new Rectangle(PADDING, PADDING, cols * cellSize, rows * cellSize);
+        Canvas.setMaxX((cols * cellSize)+PADDING);
+        Canvas.setMaxY((rows * cellSize)+PADDING);
+        Canvas.setMaxX(Background.getHeight());
+        Canvas.setMaxY(Background.getHeight());
+        Rectangle field = new Rectangle(PADDING, PADDING, cols * cellSize - PADDING, rows * cellSize - PADDING);
         field.draw();
+//        Rectangle field = new Rectangle(PADDING, PADDING, cols * cellSize, rows * cellSize);
+//        field.draw();
     }
 
     public int getCellSize() {
