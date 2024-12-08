@@ -19,6 +19,7 @@ public class Game {
     private FileManagement file;
     private boolean borderless;
     private Picture picture;
+    private Picture gameOverPic;
 
     public Game(int cols, int rows, int delay) {
 
@@ -30,6 +31,9 @@ public class Game {
         file = new FileManagement();
 
         this.borderless = false;
+
+        Picture gameOverPic = new Picture(125, 125, "resources/gameOver.png");
+        this.gameOverPic = gameOverPic;
     }
 
     public void snakeInit() {
@@ -215,6 +219,7 @@ public class Game {
     public void gameOver(){
 // insert new score if belongs to the high scores. sort it and write to file
         boolean scorePresent = false;
+        gameOverPic.draw();
 
         for (int ii= 0; ii< highScores.length;ii++){
             if (score == highScores[ii]){
