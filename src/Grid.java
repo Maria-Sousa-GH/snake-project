@@ -29,6 +29,7 @@ public class Grid {
         Canvas.setMaxY(Background.getHeight());
         Rectangle field = new Rectangle(PADDING, PADDING, cols * cellSize - PADDING, rows * cellSize - PADDING);
         field.draw();
+
 //        Rectangle field = new Rectangle(PADDING, PADDING, cols * cellSize, rows * cellSize);
 //        field.draw();
     }

@@ -1,6 +1,7 @@
 import com.codeforall.online.simplegraphics.graphics.Color;
 import com.codeforall.online.simplegraphics.graphics.Rectangle;
 import com.codeforall.online.simplegraphics.graphics.Text;
+import com.codeforall.online.simplegraphics.pictures.Picture;
 
 import java.util.ArrayList;
 
@@ -17,7 +18,7 @@ public class Game {
     private int[] highScores;
     private FileManagement file;
     private boolean borderless;
-
+    private Picture picture;
 
     public Game(int cols, int rows, int delay) {
 
@@ -37,7 +38,10 @@ public class Game {
         snakeHeadPos.setRow(grid.getRows()/2);
         snakeHeadPos.setCol(grid.getCols()/2);
 
-        Rectangle headRectangle = new Rectangle(grid.columnToX(snakeHeadPos.getCol()), grid.rowToY(snakeHeadPos.getRow()), grid.getCellSize(), grid.getCellSize());
+
+//        Rectangle headRectangle = new Rectangle(grid.columnToX(snakeHeadPos.getCol()), grid.rowToY(snakeHeadPos.getRow()), grid.getCellSize(), grid.getCellSize());
+        Rectangle headRectangle = new Rectangle(grid.columnToX(snakeHeadPos.getCol()), grid.rowToY(snakeHeadPos.getRow()), 30, 30);
+        headRectangle.setColor(Color.BLACK);
         headRectangle.fill();
 
         snakeHeadPos.setRectangle(headRectangle);
@@ -58,9 +62,9 @@ public class Game {
         foodInit();
         highScores = file.getScores();
 
-        Text title = new Text(Grid.PADDING + 250,grid.rowToY(grid.getRows())+5," S N A K E_4 A L L ");
-        title.grow(15,15);
-        title.translate(title.getX()+(Grid.PADDING-title.getX()),10);
+        Text title = new Text(Grid.PADDING + 435,grid.rowToY(grid.getRows())+15," S N A K E_4 A L L ");
+        title.grow(45,45);
+        title.translate(title.getX()+(Grid.PADDING-title.getX()),25);
         title.setColor(Color.WHITE);
         title.draw();
 
@@ -140,7 +144,7 @@ public class Game {
                 snake.setDirection(Direction.UP);
         }
 
-        Rectangle rec = new Rectangle(grid.columnToX(snake.getPos().getCol()), grid.rowToY(snake.getPos().getRow()), grid.getCellSize(), grid.getCellSize());
+        Rectangle rec = new Rectangle(grid.columnToX(snake.getPos().getCol()), grid.rowToY(snake.getPos().getRow()), 30, 30);
         rec.fill();
         snake.getPos().setRectangle(rec);
         snakelist.add(0, snake);

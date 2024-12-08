@@ -9,7 +9,7 @@ public class Main {
 
 
 
-        Game game = new Game(49,30, 200);
+        Game game = new Game(49,30, 150);
 
         Background background = new Background();
 
