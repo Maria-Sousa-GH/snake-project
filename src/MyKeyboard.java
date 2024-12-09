@@ -36,6 +36,12 @@ public class MyKeyboard implements KeyboardHandler {
         goDown.setKey(KeyboardEvent.KEY_DOWN);
         goDown.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         keyboard.addEventListener(goDown);
+
+        KeyboardEvent exit = new KeyboardEvent();
+        exit.setKey(KeyboardEvent.KEY_ESC);
+        exit.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(exit);
+
     }
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
@@ -59,8 +65,19 @@ public class MyKeyboard implements KeyboardHandler {
 
                 snakelist.get(0).setDirection(Direction.DOWN);
                 disableKey = true;
+
             }
+            else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_ESC)) {
+                exit();
+
+            }
+
         }
+
+    }
+
+    private void exit(){
+        System.exit(0);
 
     }
 

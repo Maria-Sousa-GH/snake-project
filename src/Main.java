@@ -5,14 +5,11 @@ public class Main {
 
 
         Sound sound = new Sound("sound.wav");
-        sound.play();
+//      sound.play();
 
-
-
-        Game game = new Game(49,30, 150);
+        Game game = new Game(33,27, 150);
 
         Background background = new Background();
-
 
         game.init();
         game.start();

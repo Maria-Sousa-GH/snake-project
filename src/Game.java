@@ -20,6 +20,7 @@ public class Game {
     private boolean borderless;
     private Picture picture;
     private Picture gameOverPic;
+    private Text finalScoreText;
 
     public Game(int cols, int rows, int delay) {
 
@@ -29,10 +30,16 @@ public class Game {
         keyboard = new MyKeyboard(snakelist);
         highScores = new int[10];
         file = new FileManagement();
+        score = 0;
+        this.finalScoreText = new Text(80, 560, "S c o r e  :  "  +  score);
+        finalScoreText.setColor(Color.BLACK);
+        finalScoreText.grow(29, 29);
+
+
 
         this.borderless = false;
 
-        Picture gameOverPic = new Picture(125, 125, "resources/gameOver.png");
+        Picture gameOverPic = new Picture(0, 0, "resources/gameOver.png");
         this.gameOverPic = gameOverPic;
     }
 
@@ -66,11 +73,11 @@ public class Game {
         foodInit();
         highScores = file.getScores();
 
-        Text title = new Text(Grid.PADDING + 435,grid.rowToY(grid.getRows())+15," S N A K E_4 A L L ");
-        title.grow(45,45);
-        title.translate(title.getX()+(Grid.PADDING-title.getX()),25);
-        title.setColor(Color.WHITE);
-        title.draw();
+//        Text title = new Text(Grid.PADDING + 50,grid.rowToY(grid.getRows()) - 30," Week game");
+//        title.grow(20,20);
+//        title.translate(title.getX()+(Grid.PADDING-title.getX()),0);
+//        title.setColor(Color.WHITE);
+//        title.draw();
 
 
 
@@ -164,8 +171,10 @@ public class Game {
                 ((grid.rowToY(snakelist.get(0).getPos().getRow()) + grid.getCellSize()) <= (grid.rowToY(foodPosition.getRows()) + grid.getCellSize()))) {             //   from buttom
 
             eat();
-            this.score+=10;
-            System.out.println("Game score: "+score);
+            this.score += 10;
+            System.out.println("Game score: "  + score);
+            finalScoreText.setText("Score: " + score);
+            finalScoreText.draw();
             foodPosition.createFood();
         }
     }
@@ -247,6 +256,11 @@ public class Game {
         for (int k=0; k<highScores.length;k++){
             System.out.println(highScores[k]);
         }
+
+        finalScoreText = new Text(560, 560, "HIGH SCORE :  " + score);
+        finalScoreText.setColor(Color.WHITE);
+        finalScoreText.grow(30, 30);
+        finalScoreText.draw();
 
         file.saveScores(highScores);
     }
