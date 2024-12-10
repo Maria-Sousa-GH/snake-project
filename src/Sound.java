@@ -8,7 +8,7 @@ public class Sound {
 
     public Sound(String soundFileName) {
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("sound.wav"));
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("resources/sound.wav"));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
         } catch (Exception ex) {

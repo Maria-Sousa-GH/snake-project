@@ -17,7 +17,7 @@ public class Gamescreen {
     private Text instructions2;
 
     public Gamescreen() {
-        gameOverPic = new Picture(0, 0, "gameOver.png");
+        gameOverPic = new Picture(0, 0, "resources/gameOver.png");
     }
 
     public void init(String speed,int score){
@@ -29,7 +29,7 @@ public class Gamescreen {
     }
 
     public void pictureInit(){
-        background = new Picture(0,0,"background.jpeg");
+        background = new Picture(0,0,"resources/background.jpeg");
         background.draw();
         backgroundWidth = background.getMaxX();
         backgroundHeight = background.getMaxY();
@@ -51,7 +51,7 @@ public class Gamescreen {
     }
 
     public void textTopInit(){
-        this.topText = new Text(320, 20, "S N A C K");
+        this.topText = new Text(320, 20, "S N A K E");
         topText.setColor(Color.WHITE);
         topText.grow(30, 30);
         topText.draw();

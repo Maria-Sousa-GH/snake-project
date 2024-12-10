@@ -29,7 +29,7 @@ public class Game {
         speed = Speed.FIRST;
         this.borderless = false;
         gamescreen = new Gamescreen();
-        sound = new Sound("sound.wav");
+        sound = new Sound("resources/sound.wav");
     }
 
     public void setBorderless(){

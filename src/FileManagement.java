@@ -12,7 +12,7 @@ public class FileManagement {
         String textOut= "";
 
         try {
-            reader = new BufferedReader(new FileReader("scores.txt"));
+            reader = new BufferedReader(new FileReader("resources/scores.txt"));
 
             line = reader.readLine();
 
@@ -46,7 +46,7 @@ public class FileManagement {
             }
         }
         try{
-            writer = new BufferedWriter(new FileWriter("scores.txt"));
+            writer = new BufferedWriter(new FileWriter("resources/scores.txt"));
             writer.write(text);
 
             writer.flush();

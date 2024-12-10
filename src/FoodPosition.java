@@ -24,7 +24,7 @@ public class FoodPosition {
         position.setCol((int) (Math.random() * position.getGrid().getCols()));
         position.setRow((int) (Math.random() * position.getGrid().getRows()));
 
-        Picture picture = new Picture(position.getGrid().columnToX(position.getCol())+centerFoodXY,position.getGrid().rowToY(position.getRow())+centerFoodXY,"applebig.png");
+        Picture picture = new Picture(position.getGrid().columnToX(position.getCol())+centerFoodXY,position.getGrid().rowToY(position.getRow())+centerFoodXY,"resources/applebig.png");
         picture.draw();
         picture.grow(7,7);
         position.setPicture(picture);
