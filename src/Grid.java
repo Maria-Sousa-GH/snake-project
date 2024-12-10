@@ -2,8 +2,8 @@ import com.codeforall.online.simplegraphics.graphics.Rectangle;
 
 public class Grid {
 
-    public static final int PADDING = 10;
-    private int cellSize = 15;
+    public static final int PADDING = 50;
+    private static final int cellSize = 50;
     private int cols;
     private int rows;
 
@@ -26,7 +26,7 @@ public class Grid {
         field.draw();
     }
 
-    public int getCellSize() {
+    public static int getCellSize() {
         return cellSize;
     }
 
@@ -38,13 +38,15 @@ public class Grid {
         return this.rows;
     }
 
+    public int getPadding(){return PADDING;}
+
     /**
      * Auxiliary method to compute the y value that corresponds to a specific row
      *
      * @param row index
      * @return y pixel value
      */
-    public int rowToY(int row) {
+    public static int rowToY(int row) {
         return PADDING + cellSize * row;
     }
 
@@ -54,7 +56,7 @@ public class Grid {
      * @param column index
      * @return x pixel value
      */
-    public int columnToX(int column) {
+    public static int columnToX(int column) {
         return PADDING + cellSize * column;
     }
 

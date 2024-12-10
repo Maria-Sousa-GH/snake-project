@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class Game {
 
     private Grid grid;
-    private int delay;
     private ArrayList<SnakeParts> snakelist;
     private MyKeyboard keyboard;
     private FoodPosition foodPosition;
@@ -16,21 +15,37 @@ public class Game {
     private int[] highScores;
     private FileManagement file;
     private boolean borderless;
+    private Speed speed;
+    private Gamescreen gamescreen;
+    private Sound sound;
 
-
-    public Game(int cols, int rows, int delay) {
+    public Game(int cols, int rows) {
 
         grid = new Grid(cols, rows);
-        this.delay = delay;
         this.snakelist = new ArrayList<>();
-        keyboard = new MyKeyboard(snakelist);
+        keyboard = new MyKeyboard(this);
         highScores = new int[10];
         file = new FileManagement();
-
+        speed = Speed.FIRST;
         this.borderless = false;
+        gamescreen = new Gamescreen();
+        sound = new Sound("sound.wav");
     }
 
-    public void snakeInit() {
+    public void setBorderless(){
+        this.borderless = !borderless;
+        if(borderless){
+            gamescreen.textBorderInit();
+        }else {
+            gamescreen.borderDel();
+        }
+    }
+
+    public ArrayList<SnakeParts> getSnakelist(){
+        return snakelist;
+    }
+
+    public void snakeInit(){
 
         Position snakeHeadPos = new Position(grid);
         snakeHeadPos.setRow(grid.getRows()/2);
@@ -47,29 +62,43 @@ public class Game {
     }
 
     public void foodInit(){
-        this.foodPosition = new FoodPosition(grid);
+        this.foodPosition = new FoodPosition(snakelist, grid);
     }
 
-    public void init() {
+    public void init() throws InterruptedException {
 
+        gamescreen.init(speed.getSpeed(),score);
         grid.init();
         snakeInit();
         foodInit();
         highScores = file.getScores();
-
+        start();
     }
 
     public void start() throws InterruptedException {
+        sound.loop();
 
         while (true) {
-            // Pause for a while
-            Thread.sleep(delay);
 
-            collisionDetector();
+            // Pause for a while
+            Thread.sleep(speed.getDelay());
             foodCollision();
+            collisionDetector();
+            speed();
             moveSnake();
             keyboard.setDisableKey(false);
         }
+    }
+    public void speed(){
+        if (score >= 800 ){ speed = Speed.MAXIMUM;
+        }else if (score >= 700){ speed = Speed.EIGHTH;
+        }else if (score >= 600){ speed = Speed.SEVENTH;
+        }else if (score >= 500){ speed = Speed.SIXTH;
+        }else if (score >= 400){ speed = Speed.FIFTH;
+        }else if (score >= 300){ speed = Speed.FOURTH;
+        }else if (score >= 200){ speed = Speed.THIRD;
+        }else if (score >= 100){ speed = Speed.SECOND;}
+
     }
 
     public void moveSnake() {
@@ -101,41 +130,40 @@ public class Game {
         Position pos = new Position(grid);
         SnakeParts snake = new SnakeParts(pos);
 
-        SnakeParts first = snakelist.get(0);
-
-        switch (first.getDirection()) {
+        switch (snakelist.get(snakelist.size()-1).getDirection()) {
 
             case UP:
-                snake.getPos().setCol(first.getPos().getCol());
-                snake.getPos().setRow(first.getPos().getRow() - 1);
+                snake.getPos().setCol(snakelist.get(snakelist.size()-1).getPos().getCol());
+                snake.getPos().setRow(snakelist.get(snakelist.size()-1).getPos().getRow() + 1);
                 snake.setDirection(Direction.UP);
                 break;
             case DOWN:
-                snake.getPos().setCol(first.getPos().getCol());
-                snake.getPos().setRow(first.getPos().getRow() + 1);
+                snake.getPos().setCol(snakelist.get(snakelist.size()-1).getPos().getCol());
+                snake.getPos().setRow(snakelist.get(snakelist.size()-1).getPos().getRow() - 1);
                 snake.setDirection(Direction.DOWN);
                 break;
             case LEFT:
-                snake.getPos().setCol(first.getPos().getCol() - 1);
-                snake.getPos().setRow(first.getPos().getRow());
+                snake.getPos().setCol(snakelist.get(snakelist.size()-1).getPos().getCol() + 1);
+                snake.getPos().setRow(snakelist.get(snakelist.size()-1).getPos().getRow());
                 snake.setDirection(Direction.LEFT);
                 break;
             case RIGHT:
-                snake.getPos().setCol(first.getPos().getCol() + 1);
-                snake.getPos().setRow(first.getPos().getRow());
+                snake.getPos().setCol(snakelist.get(snakelist.size()-1).getPos().getCol() - 1);
+                snake.getPos().setRow(snakelist.get(snakelist.size()-1).getPos().getRow());
                 snake.setDirection(Direction.RIGHT);
                 break;
             default:
-                snake.getPos().setCol(first.getPos().getCol() - 1);
-                snake.getPos().setRow(first.getPos().getRow());
+                snake.getPos().setCol(snakelist.get(snakelist.size()-1).getPos().getCol() + 1);
+                snake.getPos().setRow(snakelist.get(snakelist.size()-1).getPos().getRow());
                 snake.setDirection(Direction.UP);
         }
 
         Rectangle rec = new Rectangle(grid.columnToX(snake.getPos().getCol()), grid.rowToY(snake.getPos().getRow()), grid.getCellSize(), grid.getCellSize());
         rec.fill();
         snake.getPos().setRectangle(rec);
-        snakelist.add(0, snake);
-
+        snakelist.add(snake);
+        gamescreen.scoreActualize(score);
+        gamescreen.speedActualiz(speed.getSpeed());
     }
 
     public void foodCollision() {
@@ -149,7 +177,8 @@ public class Game {
             eat();
             this.score+=10;
             System.out.println("Game score: "+score);
-            foodPosition.createFood();
+            foodPosition.createFood(snakelist);
+            System.out.println(speed.getDelay());
         }
     }
 
@@ -175,9 +204,9 @@ public class Game {
         }
         // collision with borders if not borderless
         if (!borderless){
-            if ((grid.columnToX(snakelist.get(0).getPos().getCol()) <= 10  && snakelist.get(0).getDirection() == Direction.LEFT )||                                                          // collide with left limit wall
-                    ((grid.columnToX(snakelist.get(0).getPos().getCol())+15) >= grid.columnToX(grid.getCols()) && snakelist.get(0).getDirection() == Direction.RIGHT)||                     // collide with right limit wall
-                    (grid.rowToY(snakelist.get(0).getPos().getRow()) <= 10 && snakelist.get(0).getDirection() == Direction.UP)||                                                         // collide with top limit wall
+            if ((grid.columnToX(snakelist.get(0).getPos().getCol()) <= grid.getPadding()  && snakelist.get(0).getDirection() == Direction.LEFT )||                                                          // collide with left limit wall
+                    ((grid.columnToX(snakelist.get(0).getPos().getCol())+grid.getCellSize()) >= grid.columnToX(grid.getCols()) && snakelist.get(0).getDirection() == Direction.RIGHT)||                     // collide with right limit wall
+                    (grid.rowToY(snakelist.get(0).getPos().getRow()) <= grid.getPadding() && snakelist.get(0).getDirection() == Direction.UP)||                                                         // collide with top limit wall
                     (((grid.rowToY(snakelist.get(0).getPos().getRow()) + grid.getCellSize()) >= grid.rowToY(grid.getRows()))&& snakelist.get(0).getDirection() == Direction.DOWN)) {       // collide with bottom limit wall
 
                 if (!snakelist.get(0).isCrashed()) {
@@ -188,19 +217,67 @@ public class Game {
                     n.getPos().setRecColor(Color.RED);
                 }
             }
-        }else{
+        }else{ // Without borders
             // pass by left limit wall
-            if (grid.columnToX(snakelist.get(0).getPos().getCol()) <= 10  && snakelist.get(0).getDirection() == Direction.LEFT ){
+            Rectangle rect;
+            Position pos;
 
+            for(SnakeParts s: snakelist){
+                if (grid.columnToX(s.getPos().getCol()) <= grid.getPadding()  && s.getDirection() == Direction.LEFT ){
+
+                    pos = s.getPos();
+                    s.getPos().delRectangle();
+
+                    rect = new Rectangle(grid.columnToX(grid.getCols()), grid.rowToY(pos.getRow()), grid.getCellSize(), grid.getCellSize());
+                    rect.fill();
+
+                    pos.setRectangle(rect);
+                    pos.setCol(grid.getCols());
+
+                    s.setPos(pos);
+                } else if (((grid.columnToX(s.getPos().getCol()) + grid.getCellSize()) >= grid.columnToX(grid.getCols()) && s.getDirection() == Direction.RIGHT)) {
+
+                    pos = s.getPos();
+                    s.getPos().delRectangle();
+
+                    rect = new Rectangle(grid.columnToX(-1), grid.rowToY(pos.getRow()), grid.getCellSize(), grid.getCellSize());
+                    rect.fill();
+
+                    pos.setRectangle(rect);
+                    pos.setCol(-1);
+
+                    s.setPos(pos);
+                }else if  (grid.rowToY(s.getPos().getRow()) <= grid.getPadding() && s.getDirection() == Direction.UP) {
+                    pos = s.getPos();
+                    s.getPos().delRectangle();
+
+                    rect = new Rectangle(grid.columnToX(pos.getCol()), grid.rowToY(grid.getRows()), grid.getCellSize(), grid.getCellSize());
+                    rect.fill();
+
+                    pos.setRectangle(rect);
+                    pos.setRow(grid.getRows());
+
+                    s.setPos(pos);
+                }else if (((grid.rowToY(s.getPos().getRow()) + grid.getCellSize()) >= grid.rowToY(grid.getRows()))&& s.getDirection() == Direction.DOWN) {
+                    pos = s.getPos();
+                    s.getPos().delRectangle();
+
+                    rect = new Rectangle(grid.columnToX(pos.getCol()), grid.rowToY(-1), grid.getCellSize(), grid.getCellSize());
+                    rect.fill();
+
+                    pos.setRectangle(rect);
+                    pos.setRow(-1);
+
+                    s.setPos(pos);
+                }
             }
-
         }
-
-
     }
 
     public void gameOver(){
 // insert new score if belongs to the high scores. sort it and write to file
+        sound.stop();
+        gamescreen.gameOver();
         boolean scorePresent = false;
 
         for (int ii= 0; ii< highScores.length;ii++){
@@ -231,6 +308,7 @@ public class Game {
         }
 
         file.saveScores(highScores);
+
     }
 
 

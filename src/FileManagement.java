@@ -9,16 +9,16 @@ public class FileManagement {
         int[] scores = new int[10];
         String[] scoresString = new String[10];
         String line;
-        String aa= "";
+        String textOut= "";
 
         try {
-            reader = new BufferedReader(new FileReader("resources/scores.txt"));
+            reader = new BufferedReader(new FileReader("scores.txt"));
 
             line = reader.readLine();
 
             while(line != null){
-              aa += line+" ";
-              line=reader.readLine();
+                textOut += line+" ";
+                line = reader.readLine();
             }
             reader.close();
 
@@ -27,7 +27,7 @@ public class FileManagement {
         }
 
 
-        scoresString = aa.split(" ");
+        scoresString = textOut.split(" ");
 
         for (int i=0; i< scoresString.length;i++){
             if (scoresString[i] != null){
@@ -46,7 +46,7 @@ public class FileManagement {
             }
         }
         try{
-            writer = new BufferedWriter(new FileWriter("resources/scores.txt"));
+            writer = new BufferedWriter(new FileWriter("scores.txt"));
             writer.write(text);
 
             writer.flush();

@@ -6,16 +6,21 @@ import java.util.ArrayList;
 public class MyKeyboard implements KeyboardHandler {
 
     private Keyboard keyboard;
-    private ArrayList<SnakeParts> snakelist;
+    private Game game;
     private boolean disableKey;
 
-    public MyKeyboard(ArrayList<SnakeParts> snakelist) {
+    public MyKeyboard(Game game) {
         this.keyboard = new Keyboard(this);
-        this.snakelist = snakelist;
+        this.game= game;
         disableKey = false;
         keyInit();
     }
     public void keyInit() {
+
+        KeyboardEvent space = new KeyboardEvent();
+        space.setKey(KeyboardEvent.KEY_SPACE);
+        space.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(space);
 
         KeyboardEvent goRight = new KeyboardEvent();
         goRight.setKey(KeyboardEvent.KEY_RIGHT);
@@ -36,30 +41,50 @@ public class MyKeyboard implements KeyboardHandler {
         goDown.setKey(KeyboardEvent.KEY_DOWN);
         goDown.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         keyboard.addEventListener(goDown);
+
+        KeyboardEvent exit = new KeyboardEvent();
+        exit.setKey(KeyboardEvent.KEY_ESC);
+        exit.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(exit);
+
+        KeyboardEvent border = new KeyboardEvent();
+        border .setKey(KeyboardEvent.KEY_B);
+        border .setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        keyboard.addEventListener(border);
     }
+
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
         if (!disableKey) {
 
-            if ((keyboardEvent.getKey() == KeyboardEvent.KEY_RIGHT) && (!snakelist.get(0).getDirection().isOpposite(Direction.RIGHT))) {
-                snakelist.get(0).setDirection(Direction.RIGHT);
+            if ((keyboardEvent.getKey() == KeyboardEvent.KEY_RIGHT) && (!game.getSnakelist().get(0).getDirection().isOpposite(Direction.RIGHT))) {
+                game.getSnakelist().get(0).setDirection(Direction.RIGHT);
                 disableKey = true;
 
-            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_LEFT) && (!snakelist.get(0).getDirection().isOpposite(Direction.LEFT))) {
+            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_LEFT) && (!game.getSnakelist().get(0).getDirection().isOpposite(Direction.LEFT))) {
 
-                snakelist.get(0).setDirection(Direction.LEFT);
+                game.getSnakelist().get(0).setDirection(Direction.LEFT);
                 disableKey = true;
 
-            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_UP) && (!snakelist.get(0).getDirection().isOpposite(Direction.UP))) {
+            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_UP) && (!game.getSnakelist().get(0).getDirection().isOpposite(Direction.UP))) {
 
-                snakelist.get(0).setDirection(Direction.UP);
+                game.getSnakelist().get(0).setDirection(Direction.UP);
                 disableKey = true;
 
-            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_DOWN) && (!snakelist.get(0).getDirection().isOpposite(Direction.DOWN))) {
+            } else if ((keyboardEvent.getKey() == KeyboardEvent.KEY_DOWN) && (!game.getSnakelist().get(0).getDirection().isOpposite(Direction.DOWN))) {
 
-                snakelist.get(0).setDirection(Direction.DOWN);
+                game.getSnakelist().get(0).setDirection(Direction.DOWN);
                 disableKey = true;
             }
+        }
+
+        if (keyboardEvent.getKey() == KeyboardEvent.KEY_B){
+            game.setBorderless();
+        }
+
+
+        if(keyboardEvent.getKey() == KeyboardEvent.KEY_ESC){
+            System.exit(0);
         }
 
     }
