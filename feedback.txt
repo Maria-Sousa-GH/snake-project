@@ -1,0 +1,33 @@
+Congrats on having a working MVP of the snake game! You should celebrate this moment!
+In you are on the right path, and I see you took full advantage fo what you've learned
+with Car Crash's implementation!
+
+Here are things you should consider improving on this assignment:
+
+- It's a convention and a good practice to have main packages in your `src` folder. They
+should follow a rule, from the most general to the most specific part in a domain name, like
+`com.codeforall.online`.
+
+- A great deal of your classes are well encapulated and organised, but your Game class is doing
+quite a lot of things. Try encapsulating it more, creating specialised classes, like one just to handle
+the keyboard, and give it as property in the Game class if you need its methods. This will greatly
+improve the maintainability of your code, and it will not become a nightmare as the application grows.
+
+- Watch out for never used variables, they pollute your code, and they also present repeated code.
+Take a look to your `snakeInit()` method.
+
+- Give meaningful names to your variables it will facilitate your lives a great deal in the future.
+
+- Watch out for extra spaces and un-indented code, they worsen readability.
+
+- Create a way to leave the game, like a `close`. To do that take a look to `System.exit(0)`.
+
+- Create a menu or some way to display the rules, it can be daunting for users to not know how to play
+a game, even one so much intuitive as this one.
+
+- Let the snakes pass the borders and appear on the other side. And perhaps letting the snake become faster
+as they eat.
+
+- Play around using images for the food and for the background. It will turn your game more alluring.
+
+- Venture yourselves and do not be afraid of being more creative. This is how you learn!
